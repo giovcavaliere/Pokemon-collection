@@ -23,7 +23,7 @@ h1{font-size:22px;margin:0}.sub,.notice{font-size:12px;color:var(--muted);line-h
 .section{margin-top:18px}.section h3{font-size:17px;margin:0 0 10px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.tile{border:1px solid var(--line);background:var(--card);color:#fff;border-radius:21px;padding:17px;text-align:left}.tile .emoji{font-size:28px}.tile b{display:block;margin-top:8px}.tile small{color:var(--muted)}
 .panel{padding:18px}.panel input,.sortselect{width:100%;border:1px solid var(--line);background:rgba(255,255,255,.08);color:white;border-radius:14px;padding:12px 13px}.sortselect option{color:#111}.stack{display:grid;gap:10px}.scanbox{border:1.5px dashed rgba(255,255,255,.3);border-radius:22px;min-height:220px;display:grid;place-items:center;overflow:hidden;background:#0002;text-align:center;padding:14px}.scanbox img{max-width:100%;max-height:390px;border-radius:15px}.result{display:none;margin-top:12px;padding:14px;border-radius:18px;background:rgba(79,224,165,.12);border:1px solid rgba(79,224,165,.35)}.scanprogress{display:none;background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:14px;padding:10px 12px}.scanprogress.show{display:block}.scanprogressbar{height:7px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden;margin-top:7px}.scanprogressbar i{display:block;width:0%;height:100%;background:linear-gradient(90deg,#59a9ff,#4fe0a5);transition:width .2s}.candidatebox{display:none;margin-top:10px}.assistbox{display:none;margin-top:10px;background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:16px;padding:12px}.assistbox.show{display:block}.assistgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.assistgrid input{width:100%;border:1px solid var(--line);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;padding:10px}.assistactions{display:flex;gap:8px;margin-top:10px}.assistactions button{flex:1}.candidatebox.show{display:block}.candidate{width:100%;border:1px solid var(--line);background:rgba(255,255,255,.06);color:white;border-radius:13px;padding:10px;text-align:left;margin-top:7px}.candidate b{display:block}.candidate small{color:var(--muted)}.result.show{display:block}.tag{display:inline-block;padding:5px 8px;border-radius:999px;background:rgba(89,169,255,.16);color:#cfe6ff;font-size:11px;margin-top:5px}
 .switch{position:relative;width:48px;height:28px}.switch input{display:none}.slider{position:absolute;inset:0;background:#44506f;border-radius:20px}.slider:after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;left:3px;top:3px;background:white}.switch input:checked + .slider{background:#3ecb91}.switch input:checked + .slider:after{transform:translateX(20px)}
-.collection{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;align-items:start}#collectionGrid,#setGrid{padding-bottom:110px}#setGrid{grid-template-columns:minmax(260px,360px);justify-content:center}#setGrid .carditem{width:100%;height:500px}.carditem{position:relative;perspective:1100px;height:420px;cursor:pointer}.cardinner{position:absolute;inset:0;transition:transform .55s;transform-style:preserve-3d}.carditem.flipped .cardinner{transform:rotateY(180deg)}.cardface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card2);border:1px solid var(--line);border-radius:18px;overflow:hidden}.cardback{transform:rotateY(180deg);padding:16px;display:flex;flex-direction:column;overflow:hidden}.thumb{height:74%;background:linear-gradient(180deg,#0d1732,#101c3c);overflow:hidden;display:flex;align-items:center;justify-content:center;padding:10px}.thumb img{width:100%;height:100%;object-fit:contain;object-position:center;border-radius:14px;box-shadow:0 10px 30px #0007}.meta{height:26%;padding:10px 12px;display:flex;flex-direction:column;justify-content:flex-start;font-size:13px}.meta small{color:var(--muted)}.fliphint{text-align:center;color:var(--muted);font-size:11px;margin-top:auto;padding-top:6px}.details{display:grid;gap:6px}.detailrow{background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:12px;padding:8px 10px}.detailrow b{font-size:12px;line-height:1.16}.detailrow span,.market span{font-size:9px}.detailrow span,.market span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase}.market{margin-top:8px;background:rgba(255,216,77,.12);border:1px solid rgba(255,216,77,.26);border-radius:13px;padding:9px 10px}.market b{font-size:15px}.market .notice{font-size:10px}.cardback h3{font-size:16px;line-height:1.12;margin:4px 0 7px}.cardback .eyebrow{font-size:8px}.cardback .fliphint{margin-top:auto;padding-top:7px;font-size:10px}
+.collection{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;align-items:start}#collectionGrid,#setGrid,#setCatalogCards,#manualSearchResults{padding-bottom:130px}#setGrid{grid-template-columns:minmax(260px,360px);justify-content:center}#setGrid .carditem{width:100%;height:500px}.carditem{position:relative;perspective:1100px;height:420px;cursor:pointer}.cardinner{position:absolute;inset:0;transition:transform .55s;transform-style:preserve-3d}.carditem.flipped .cardinner{transform:rotateY(180deg)}.cardface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card2);border:1px solid var(--line);border-radius:18px;overflow:hidden}.cardback{transform:rotateY(180deg);padding:16px;display:flex;flex-direction:column;overflow:hidden}.thumb{height:74%;background:linear-gradient(180deg,#0d1732,#101c3c);overflow:hidden;display:flex;align-items:center;justify-content:center;padding:10px}.thumb img{width:100%;height:100%;object-fit:contain;object-position:center;border-radius:14px;box-shadow:0 10px 30px #0007}.meta{height:26%;padding:10px 12px;display:flex;flex-direction:column;justify-content:flex-start;font-size:13px}.meta small{color:var(--muted)}.fliphint{text-align:center;color:var(--muted);font-size:11px;margin-top:auto;padding-top:6px}.details{display:grid;gap:6px}.detailrow{background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:12px;padding:8px 10px}.detailrow b{font-size:12px;line-height:1.16}.detailrow span,.market span{font-size:9px}.detailrow span,.market span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase}.market{margin-top:8px;background:rgba(255,216,77,.12);border:1px solid rgba(255,216,77,.26);border-radius:13px;padding:9px 10px}.market b{font-size:15px}.market .notice{font-size:10px}.cardback h3{font-size:16px;line-height:1.12;margin:4px 0 7px}.cardback .eyebrow{font-size:8px}.cardback .fliphint{margin-top:auto;padding-top:7px;font-size:10px}
 .selectmark{display:none;position:absolute;top:9px;right:9px;width:30px;height:30px;border-radius:50%;background:#091126dd;border:2px solid #fff;z-index:3;place-items:center}.select-mode .selectmark{display:grid}.carditem.selected{outline:3px solid var(--yellow);border-radius:18px}.carditem.selected .selectmark{background:var(--yellow);color:#20243a}
 .setrow{padding:15px;cursor:pointer}.progress{height:10px;border-radius:999px;background:#ffffff18;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#59a9ff,#4fe0a5)}.count{font-weight:900;font-size:18px}.empty{text-align:center;color:var(--muted);padding:30px}
 .view{display:none}.view.active{display:block}
@@ -44,7 +44,7 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
 .setlist{display:grid;gap:8px;margin-top:10px}
 .setpick{border:1px solid var(--line);background:rgba(255,255,255,.055);color:#fff;border-radius:14px;padding:11px;text-align:left}
 .setpick b{display:block}.setpick small{color:var(--muted)}
-.cataloghead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+.cataloghead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}.catalogtools{position:sticky;top:8px;z-index:8;background:rgba(13,25,52,.96);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:14px;padding:10px;margin:10px 0}.catalogtools .row{align-items:flex-end}.catalogtools input{width:100%;border:1px solid var(--line);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;padding:10px}.catalogtools label{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}
 @media(max-width:450px){.scanmodes{grid-template-columns:1fr}.searchrow{grid-template-columns:1fr 1fr}.searchrow input:first-child{grid-column:1/-1}.resultgrid{grid-template-columns:repeat(2,1fr)}}
 
 </style>
@@ -136,6 +136,16 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
         <div class="cataloghead">
           <div><b id="catalogSetTitle"></b><div id="catalogSetCount" class="notice"></div></div>
           <button type="button" class="iconbtn" id="catalogBackBtn">←</button>
+        </div>
+        <div class="catalogtools">
+          <div class="row">
+            <div style="flex:1">
+              <label for="catalogNumberFilter">Numero carta</label>
+              <input id="catalogNumberFilter" type="text" inputmode="numeric" placeholder="Es. 74">
+            </div>
+            <button type="button" class="cta secondary" id="catalogClearFilter" style="padding:10px 12px">Tutte</button>
+          </div>
+          <div id="catalogFilterStatus" class="notice" style="margin-top:6px"></div>
         </div>
         <div id="setCatalogCards" class="resultgrid"></div>
       </div>
@@ -374,6 +384,27 @@ async function searchSetsByName(q){
   if(!n)return [];
   return all.filter(s=>normalizeSearchText(s.name).includes(n)||normalizeSearchText(s.id).includes(n)).slice(0,30);
 }
+
+let currentCatalogCards=[];
+let currentCatalogSet=null;
+function renderCatalogCards(){
+  const box=document.getElementById('setCatalogCards');
+  const filter=document.getElementById('catalogNumberFilter').value.trim();
+  const status=document.getElementById('catalogFilterStatus');
+  box.innerHTML='';
+  let list=currentCatalogCards;
+  if(filter){
+    const wanted=String(parseInt(filter,10));
+    list=currentCatalogCards.filter(c=>String(parseInt(c.localId,10))===wanted);
+  }
+  status.textContent=filter
+    ? (list.length?list.length+' carta trovata':'Nessuna carta con questo numero')
+    : '';
+  for(const brief of list){
+    renderCardBriefButton({...brief,set:currentCatalogSet},box,pickBriefAndAdd);
+  }
+}
+
 async function loadSetCatalog(setBrief){
   const wrap=document.getElementById('setCatalogWrap');
   const list=document.getElementById('setSearchList');
@@ -396,10 +427,11 @@ async function loadSetCatalog(setBrief){
   }
   const total=full?.cardCount?.official||full?.cards?.length||0;
   document.getElementById('catalogSetCount').textContent=(full.cards?.length||0)+' carte • ufficiali '+total;
-  const cards=[...(full.cards||[])].sort((a,b)=>Number(baseNo(a.localId))-Number(baseNo(b.localId)));
-  for(const brief of cards){
-    renderCardBriefButton({...brief,set:{id:full.id,name:full.name}},cardsBox,pickBriefAndAdd);
-  }
+  currentCatalogSet={id:full.id,name:full.name};
+  currentCatalogCards=[...(full.cards||[])].sort((a,b)=>Number(baseNo(a.localId))-Number(baseNo(b.localId)));
+  document.getElementById('catalogNumberFilter').value='';
+  document.getElementById('catalogFilterStatus').textContent='';
+  renderCatalogCards();
 }
 
 function sortCardsList(arr,mode){
@@ -975,9 +1007,21 @@ document.getElementById('setSearchInput').addEventListener('input',()=>{
     }
   },250);
 });
+
+document.getElementById('catalogNumberFilter').addEventListener('input',renderCatalogCards);
+document.getElementById('catalogNumberFilter').addEventListener('keydown',e=>{
+  if(e.key==='Enter')renderCatalogCards();
+});
+document.getElementById('catalogClearFilter').addEventListener('click',()=>{
+  document.getElementById('catalogNumberFilter').value='';
+  renderCatalogCards();
+});
+
 document.getElementById('catalogBackBtn').addEventListener('click',()=>{
   document.getElementById('setCatalogWrap').style.display='none';
   document.getElementById('setSearchList').style.display='grid';
+  document.getElementById('catalogNumberFilter').value='';
+  currentCatalogCards=[];currentCatalogSet=null;
 });
 
 document.getElementById('assistSearch').addEventListener('click',async()=>{

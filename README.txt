@@ -62,3 +62,10 @@ NOVITÀ v1.5
 - Catalogo collezioni: cerca il set, aprilo e visualizza tutte le carte con immagine.
 - Tocca una carta trovata/catalogata per caricarla come carta riconosciuta e aggiungerla normalmente.
 - Lo scanner resta disponibile ma non è più un collo di bottiglia.
+
+NOVITÀ v1.5.1
+- Catalogo collezione con spazio inferiore aggiuntivo: la barra di navigazione non copre più le ultime carte durante lo scroll.
+- Dopo aver scelto una collezione compare il campo Numero carta.
+- Inserendo, ad esempio, 74 vengono mostrate solo le carte con numero 74.
+- Pulsante “Tutte” per azzerare rapidamente il filtro e tornare all'intero set.
+- Il filtro numero resta visibile in alto mentre si scorre il catalogo.
