@@ -29,6 +29,24 @@ h1{font-size:22px;margin:0}.sub,.notice{font-size:12px;color:var(--muted);line-h
 .view{display:none}.view.active{display:block}
 nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(calc(100% - 24px),720px);display:grid;grid-template-columns:repeat(4,1fr);background:rgba(9,17,38,.93);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:22px;padding:8px;z-index:20}nav button{border:0;background:transparent;color:#aab7d6;border-radius:15px;padding:8px 4px;font-size:11px}nav button span{display:block;font-size:21px}nav button.active{background:#fff1;color:#fff}
 .modalbackdrop{position:fixed;inset:0;background:rgba(3,8,20,.72);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000}.modalbackdrop.show{display:flex}.modal{width:min(420px,100%);background:linear-gradient(180deg,#17264f,#101a38);border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:22px;box-shadow:0 30px 80px #0009}.modalicon{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:rgba(255,216,77,.14);font-size:24px;margin-bottom:12px}.modal h3{margin:0 0 8px;font-size:22px}.modal p{margin:0;color:#d6dff4;line-height:1.5}.modalactions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}.modalactions button{width:100%}@media(max-width:450px){.collection{grid-template-columns:1fr}.carditem{height:440px}#setGrid{grid-template-columns:1fr}#setGrid .carditem{max-width:360px;margin:auto;height:500px}.hero h2{font-size:25px}.cardback{padding:13px}.detailrow{padding:7px 8px}.market{margin-top:7px}.modalactions{grid-template-columns:1fr}}
+
+.scanmodes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.scanmode{border:1px solid var(--line);background:rgba(255,255,255,.06);color:#fff;border-radius:14px;padding:10px 8px;font-weight:700;font-size:12px}
+.scanmode.active{background:var(--yellow);color:#20243a}
+.modepanel{display:none}.modepanel.active{display:block}
+.searchform{display:grid;gap:8px}.searchrow{display:grid;grid-template-columns:1.5fr .8fr .8fr;gap:8px}
+.searchrow input,.setsearch{width:100%;border:1px solid var(--line);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;padding:11px}
+.resultgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:12px}
+.searchcard{border:1px solid var(--line);background:rgba(255,255,255,.055);color:#fff;border-radius:16px;padding:8px;text-align:left;overflow:hidden}
+.searchcard img{width:100%;aspect-ratio:2.5/3.5;object-fit:contain;background:#0d1732;border-radius:10px}
+.searchcard b{display:block;font-size:12px;margin-top:7px;line-height:1.15}
+.searchcard small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.setlist{display:grid;gap:8px;margin-top:10px}
+.setpick{border:1px solid var(--line);background:rgba(255,255,255,.055);color:#fff;border-radius:14px;padding:11px;text-align:left}
+.setpick b{display:block}.setpick small{color:var(--muted)}
+.cataloghead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+@media(max-width:450px){.scanmodes{grid-template-columns:1fr}.searchrow{grid-template-columns:1fr 1fr}.searchrow input:first-child{grid-column:1/-1}.resultgrid{grid-template-columns:repeat(2,1fr)}}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
@@ -51,7 +69,13 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
   </div>
 </section>
 <section id="scan" class="view">
-  <div class="section"><h3>Scansiona una carta</h3></div>
+  <div class="section"><h3>Aggiungi una carta</h3></div>
+  <div class="scanmodes">
+    <button type="button" class="scanmode active" data-scanmode="photo">📸 Foto</button>
+    <button type="button" class="scanmode" data-scanmode="search">🔎 Cerca carta</button>
+    <button type="button" class="scanmode" data-scanmode="browse">🗂️ Sfoglia collezione</button>
+  </div>
+  <div id="mode-photo" class="modepanel active">
   <div class="panel stack">
     <label class="scanbox" for="cardPhoto"><div id="scanPlaceholder"><div style="font-size:46px">📷</div><b>Tocca per fotografare</b></div><img id="preview" hidden alt="Anteprima"></label>
     <input id="cardPhoto" type="file" accept="image/*" capture="environment" hidden>
@@ -80,6 +104,41 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
       <b style="font-size:20px">Pala Scavabuche</b><div class="tag">POR • 074/088</div><p>Equilibrio Perfetto • Comune Reverse</p>
       <div class="row"><span>Salva anche la foto</span><label class="switch"><input id="savePhoto" type="checkbox"><span class="slider"></span></label></div>
       <button type="button" class="cta" id="addCardBtn" style="width:100%;margin-top:13px">➕ Aggiungi alla collezione</button>
+    </div>
+  </div>
+  </div>
+
+  <div id="mode-search" class="modepanel">
+    <div class="panel">
+      <b>Cerca una carta</b>
+      <div class="notice" style="margin-top:4px">Puoi cercare per nome, numero e set. Il nome può essere anche parziale.</div>
+      <div class="searchform" style="margin-top:10px">
+        <div class="searchrow">
+          <input id="manualSearchName" type="text" placeholder="Nome (es. Mewtwo)">
+          <input id="manualSearchNumber" type="text" inputmode="numeric" placeholder="Numero">
+          <input id="manualSearchSet" type="text" placeholder="Set (es. POR)">
+        </div>
+        <button type="button" class="cta" id="manualSearchBtn">Cerca</button>
+      </div>
+      <div id="manualSearchStatus" class="notice" style="margin-top:10px"></div>
+      <div id="manualSearchResults" class="resultgrid"></div>
+    </div>
+  </div>
+
+  <div id="mode-browse" class="modepanel">
+    <div class="panel">
+      <b>Sfoglia per collezione</b>
+      <div class="notice" style="margin-top:4px">Cerca il nome della collezione e poi scegli la carta dall'elenco.</div>
+      <input id="setSearchInput" class="setsearch" type="text" placeholder="Es. Equilibrio Perfetto" style="margin-top:10px">
+      <div id="setSearchStatus" class="notice" style="margin-top:8px"></div>
+      <div id="setSearchList" class="setlist"></div>
+      <div id="setCatalogWrap" style="display:none">
+        <div class="cataloghead">
+          <div><b id="catalogSetTitle"></b><div id="catalogSetCount" class="notice"></div></div>
+          <button type="button" class="iconbtn" id="catalogBackBtn">←</button>
+        </div>
+        <div id="setCatalogCards" class="resultgrid"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -202,6 +261,147 @@ function parseMarketValue(v){
   const n=parseFloat(s);
   return Number.isFinite(n)?n:-1;
 }
+
+function setScanMode(mode){
+  document.querySelectorAll('.scanmode').forEach(b=>b.classList.toggle('active',b.dataset.scanmode===mode));
+  document.querySelectorAll('.modepanel').forEach(p=>p.classList.remove('active'));
+  const panel=document.getElementById('mode-'+mode);
+  if(panel)panel.classList.add('active');
+}
+function briefImageUrl(brief){
+  return brief?.image ? brief.image+'/high.webp' : '';
+}
+async function getFullCardByBrief(brief){
+  if(brief&&brief._full)return brief._full;
+  return await fetchTCGDexCard(brief);
+}
+function renderCardBriefButton(brief,container,onPick){
+  const btn=document.createElement('button');
+  btn.type='button';
+  btn.className='searchcard';
+  const img=briefImageUrl(brief);
+  btn.innerHTML=(img?'<img src="'+img+'" alt="">':'<div style="aspect-ratio:2.5/3.5;background:#0d1732;border-radius:10px"></div>')
+    +'<b>'+String(brief.name||'Carta Pokémon')+'</b>'
+    +'<small>#'+String(brief.localId||'—')+(brief.set?.name?' • '+brief.set.name:'')+'</small>';
+  btn.onclick=()=>onPick(brief);
+  container.appendChild(btn);
+}
+async function pickBriefAndAdd(brief){
+  const full=await getFullCardByBrief(brief);
+  if(!full){alert('Non riesco a caricare i dettagli della carta.');return;}
+  currentRecognizedCard=cardFromTCGDex(full,null);
+  showRecognizedCard(currentRecognizedCard);
+  setScanMode('photo');
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'center'});
+}
+async function robustManualSearch(name,number,setCode){
+  const cleanName=String(name||'').trim();
+  const cleanSet=canonicalSetCode(setCode||'');
+  const cleanNumber=String(number||'').trim();
+
+  // 1) set + numero: la via più precisa
+  if(cleanSet && cleanNumber){
+    const direct=await fetchDirectSetCard(cleanSet,cleanNumber);
+    if(direct)return [{id:direct.id,localId:direct.localId,name:direct.name,image:direct.image,set:direct.set,_full:direct}];
+  }
+
+  // 2) nome parziale
+  let candidates=[];
+  if(cleanName){
+    for(const lang of ['it','en']){
+      try{
+        const r=await fetch('https://api.tcgdex.net/v2/'+lang+'/cards?name='+encodeURIComponent(cleanName),{cache:'no-store'});
+        if(r.ok){
+          const d=await r.json();
+          if(d.length){candidates=d;break;}
+        }
+      }catch(e){}
+    }
+  }
+
+  // 3) se manca il nome ma c'è numero, usa localId
+  if(!candidates.length && cleanNumber){
+    for(const lang of ['it','en']){
+      try{
+        const r=await fetch('https://api.tcgdex.net/v2/'+lang+'/cards?localId='+encodeURIComponent(cleanNumber),{cache:'no-store'});
+        if(r.ok){
+          const d=await r.json();
+          if(d.length){candidates=d;break;}
+        }
+      }catch(e){}
+    }
+  }
+
+  if(cleanNumber && candidates.length){
+    const exact=candidates.filter(c=>String(parseInt(c.localId,10))===String(parseInt(cleanNumber,10)));
+    if(exact.length)candidates=exact;
+  }
+  if(cleanSet && candidates.length){
+    const filtered=[];
+    for(const brief of candidates.slice(0,50)){
+      const full=await getFullCardByBrief(brief);
+      if(!full)continue;
+      const id=canonicalSetCode(full?.set?.id||'');
+      const nm=String(full?.set?.name||'');
+      if(id===cleanSet || (cleanSet==='POR'&&/equilibrio perfetto|perfect order/i.test(nm))){
+        filtered.push({...brief,set:full.set,_full:full});
+      }
+    }
+    if(filtered.length)candidates=filtered;
+  }
+  return candidates.slice(0,40);
+}
+let allSetsCache=null;
+async function loadAllSets(){
+  if(allSetsCache)return allSetsCache;
+  for(const lang of ['it','en']){
+    try{
+      const r=await fetch('https://api.tcgdex.net/v2/'+lang+'/sets',{cache:'no-store'});
+      if(r.ok){
+        const d=await r.json();
+        if(d.length){allSetsCache=d;return d;}
+      }
+    }catch(e){}
+  }
+  return [];
+}
+function normalizeSearchText(s){
+  return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+}
+async function searchSetsByName(q){
+  const all=await loadAllSets();
+  const n=normalizeSearchText(q);
+  if(!n)return [];
+  return all.filter(s=>normalizeSearchText(s.name).includes(n)||normalizeSearchText(s.id).includes(n)).slice(0,30);
+}
+async function loadSetCatalog(setBrief){
+  const wrap=document.getElementById('setCatalogWrap');
+  const list=document.getElementById('setSearchList');
+  const cardsBox=document.getElementById('setCatalogCards');
+  document.getElementById('catalogSetTitle').textContent=setBrief.name;
+  document.getElementById('catalogSetCount').textContent='Caricamento…';
+  cardsBox.innerHTML='';
+  list.style.display='none';
+  wrap.style.display='block';
+  let full=null;
+  for(const lang of ['it','en']){
+    try{
+      const r=await fetch('https://api.tcgdex.net/v2/'+lang+'/sets/'+encodeURIComponent(setBrief.id),{cache:'no-store'});
+      if(r.ok){full=await r.json();break;}
+    }catch(e){}
+  }
+  if(!full){
+    document.getElementById('catalogSetCount').textContent='Impossibile caricare la collezione';
+    return;
+  }
+  const total=full?.cardCount?.official||full?.cards?.length||0;
+  document.getElementById('catalogSetCount').textContent=(full.cards?.length||0)+' carte • ufficiali '+total;
+  const cards=[...(full.cards||[])].sort((a,b)=>Number(baseNo(a.localId))-Number(baseNo(b.localId)));
+  for(const brief of cards){
+    renderCardBriefButton({...brief,set:{id:full.id,name:full.name}},cardsBox,pickBriefAndAdd);
+  }
+}
+
 function sortCardsList(arr,mode){
   const out=[...arr];
   const cmpText=(a,b)=>String(a||'').localeCompare(String(b||''),'it',{sensitivity:'base'});
@@ -719,6 +919,66 @@ document.getElementById('bgPhoto').addEventListener('change',e=>{const f=e.targe
 function removeBackground(){localStorage.removeItem(BG_KEY);const l=document.getElementById('appBackground');l.removeAttribute('style')}
 
 
+
+
+document.querySelectorAll('.scanmode').forEach(btn=>{
+  btn.addEventListener('click',()=>setScanMode(btn.dataset.scanmode));
+});
+
+document.getElementById('manualSearchBtn').addEventListener('click',async()=>{
+  const name=document.getElementById('manualSearchName').value.trim();
+  const number=document.getElementById('manualSearchNumber').value.trim();
+  const setCode=document.getElementById('manualSearchSet').value.trim();
+  const status=document.getElementById('manualSearchStatus');
+  const box=document.getElementById('manualSearchResults');
+  box.innerHTML='';
+  if(!name&&!number&&!setCode){
+    status.textContent='Inserisci almeno nome, numero o set.';
+    return;
+  }
+  status.textContent='Ricerca in corso…';
+  const results=await robustManualSearch(name,number,setCode);
+  status.textContent=results.length?results.length+' risultati':'Nessun risultato';
+  for(const brief of results)renderCardBriefButton(brief,box,pickBriefAndAdd);
+});
+document.getElementById('manualSearchName').addEventListener('keydown',e=>{
+  if(e.key==='Enter')document.getElementById('manualSearchBtn').click();
+});
+document.getElementById('manualSearchNumber').addEventListener('keydown',e=>{
+  if(e.key==='Enter')document.getElementById('manualSearchBtn').click();
+});
+document.getElementById('manualSearchSet').addEventListener('keydown',e=>{
+  if(e.key==='Enter')document.getElementById('manualSearchBtn').click();
+});
+
+let setSearchTimer=null;
+document.getElementById('setSearchInput').addEventListener('input',()=>{
+  clearTimeout(setSearchTimer);
+  setSearchTimer=setTimeout(async()=>{
+    const q=document.getElementById('setSearchInput').value.trim();
+    const status=document.getElementById('setSearchStatus');
+    const list=document.getElementById('setSearchList');
+    const wrap=document.getElementById('setCatalogWrap');
+    wrap.style.display='none';
+    list.style.display='grid';
+    list.innerHTML='';
+    if(q.length<2){status.textContent='Scrivi almeno 2 caratteri.';return;}
+    status.textContent='Cerco le collezioni…';
+    const sets=await searchSetsByName(q);
+    status.textContent=sets.length?sets.length+' collezioni trovate':'Nessuna collezione trovata';
+    for(const s of sets){
+      const btn=document.createElement('button');
+      btn.type='button';btn.className='setpick';
+      btn.innerHTML='<b>'+s.name+'</b><small>'+s.id+' • '+(s.cardCount?.official||s.cardCount?.total||'?')+' carte</small>';
+      btn.onclick=()=>loadSetCatalog(s);
+      list.appendChild(btn);
+    }
+  },250);
+});
+document.getElementById('catalogBackBtn').addEventListener('click',()=>{
+  document.getElementById('setCatalogWrap').style.display='none';
+  document.getElementById('setSearchList').style.display='grid';
+});
 
 document.getElementById('assistSearch').addEventListener('click',async()=>{
   const name=document.getElementById('assistName').value.trim();

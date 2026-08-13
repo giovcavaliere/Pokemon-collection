@@ -51,3 +51,14 @@ FIX v1.4.1
   * verifica il totale ufficiale del set
   * accetta POR/PRO come alias
 - Migliorata la probabilità di trovare carte che prima non venivano riconosciute “in nessun modo”.
+
+NOVITÀ v1.5
+- Tre modalità separate per aggiungere una carta:
+  1. Foto/OCR
+  2. Ricerca manuale seria per nome, numero e set
+  3. Sfoglia collezione
+- Ricerca per nome parziale via TCGdex.
+- Ricerca diretta set + numero quando disponibili.
+- Catalogo collezioni: cerca il set, aprilo e visualizza tutte le carte con immagine.
+- Tocca una carta trovata/catalogata per caricarla come carta riconosciuta e aggiungerla normalmente.
+- Lo scanner resta disponibile ma non è più un collo di bottiglia.
