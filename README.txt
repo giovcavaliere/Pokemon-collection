@@ -23,3 +23,11 @@ NOVITÀ v1.3
 - Tab Carte: menu Ordina per con recente, nome, numero carta, rarità e valore stimato.
 - Dentro una collezione: stesso menu Ordina per, con default numero carta crescente.
 - Il nome del collezionista viene salvato localmente sul dispositivo.
+
+FIX v1.3.1 – scansione mobile
+- Pre-elaborazione specifica per smartphone.
+- Ridimensionamento automatico delle foto molto grandi.
+- OCR concentrato sulla parte alta e bassa della carta.
+- Scala di grigi e contrasto aumentato per foil/riflessi.
+- Messaggio d'errore corretto: un mancato match non significa automaticamente foto sfocata.
+- Cache PWA aggiornata.

@@ -60,7 +60,7 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
       <div class="row"><b id="scanStatus">Preparazione…</b><span id="scanPct" class="notice">0%</span></div>
       <div class="scanprogressbar"><i id="scanProgressBar"></i></div>
     </div>
-    <div class="notice">Riconoscimento reale: legge testo e numero dalla foto e cerca la carta nel database TCGdex. Richiede Internet.</div>
+    <div class="notice">Riconoscimento reale: sul telefono ottimizzo automaticamente la foto e leggo soprattutto nome e numero della carta, poi cerco la corrispondenza su TCGdex. Richiede Internet.</div>
     <div id="candidateBox" class="candidatebox"><b>Possibili corrispondenze</b><div id="candidateList"></div></div>
     <div id="result" class="result">
       <b style="font-size:20px">Pala Scavabuche</b><div class="tag">POR • 074/088</div><p>Equilibrio Perfetto • Comune Reverse</p>
@@ -253,6 +253,45 @@ function uniqueCards(arr){const s=new Set();return arr.filter(c=>{const k=(c.ser
 function groupedSets(){const groups={};uniqueCards(cards()).forEach(c=>{const name=c.series||c.set||'Senza collezione';if(!groups[name])groups[name]={name,total:Number(c.setTotal)||0,cards:[]};groups[name].cards.push(c)});return Object.values(groups)}
 function updateStats(){const arr=cards(),groups=groupedSets();document.getElementById('statCards').textContent=arr.length;document.getElementById('statSets').textContent=groups.length;document.getElementById('statCompleteSets').textContent=groups.filter(g=>g.total>0&&g.cards.length>=g.total).length;document.getElementById('statSpecial').textContent=arr.filter(c=>c.special).length}
 
+
+async function prepareOCRImage(dataUrl){
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.onload=()=>{
+      try{
+        const targetW=Math.min(1500,Math.max(900,img.naturalWidth));
+        const scale=targetW/img.naturalWidth;
+        const topH=Math.round(img.naturalHeight*0.34);
+        const bottomY=Math.round(img.naturalHeight*0.67);
+        const bottomH=img.naturalHeight-bottomY;
+        const gap=Math.round(targetW*0.025);
+        const outTopH=Math.round(topH*scale);
+        const outBottomH=Math.round(bottomH*scale);
+        const canvas=document.createElement('canvas');
+        canvas.width=targetW;
+        canvas.height=outTopH+gap+outBottomH;
+        const ctx=canvas.getContext('2d',{willReadFrequently:true});
+        ctx.fillStyle='#fff';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(img,0,0,img.naturalWidth,topH,0,0,targetW,outTopH);
+        ctx.drawImage(img,0,bottomY,img.naturalWidth,bottomH,0,outTopH+gap,targetW,outBottomH);
+
+        const im=ctx.getImageData(0,0,canvas.width,canvas.height);
+        const d=im.data, contrast=1.45;
+        for(let i=0;i<d.length;i+=4){
+          const gray=0.299*d[i]+0.587*d[i+1]+0.114*d[i+2];
+          const v=Math.max(0,Math.min(255,(gray-128)*contrast+128));
+          d[i]=d[i+1]=d[i+2]=v;
+        }
+        ctx.putImageData(im,0,0);
+        resolve(canvas.toDataURL('image/jpeg',0.92));
+      }catch(e){reject(e)}
+    };
+    img.onerror=()=>reject(new Error('Non riesco a preparare la foto per il riconoscimento.'));
+    img.src=dataUrl;
+  });
+}
+
 const photo=document.getElementById('cardPhoto'),preview=document.getElementById('preview'),analyze=document.getElementById('analyzeBtn');
 photo.addEventListener('change',()=>{
   const f=photo.files[0];
@@ -295,7 +334,10 @@ analyze.addEventListener('click',async()=>{
   try{
     setProgress('Lettura della carta…',.05);
     if(typeof Tesseract==='undefined')throw new Error('OCR non disponibile: controlla la connessione Internet.');
-    const result=await Tesseract.recognize(currentPhotoData,'eng',{logger:m=>{if(thisScan!==scanSerial)return;if(m.status==='recognizing text')setProgress('Sto leggendo nome e numero…',.12+(m.progress||0)*.58);}});
+    setProgress('Ottimizzo la foto per il telefono…',.10);
+    const ocrImage=await prepareOCRImage(currentPhotoData);
+    if(thisScan!==scanSerial)return;
+    const result=await Tesseract.recognize(ocrImage,'eng',{logger:m=>{if(thisScan!==scanSerial)return;if(m.status==='recognizing text')setProgress('Sto leggendo nome e numero…',.18+(m.progress||0)*.52);}});
     if(thisScan!==scanSerial)return;
     const text=result?.data?.text||'';
     const norm=normalizeOCR(text);
@@ -349,7 +391,7 @@ analyze.addEventListener('click',async()=>{
       setProgress('Scegli la corrispondenza',1);
       return;
     }
-    throw new Error('Non riesco a identificarla con sicurezza. Prova con una foto più dritta e nitida.');
+    throw new Error('Non riesco a identificare con sicurezza la carta. Non significa necessariamente che la foto sia sfocata: prova a inquadrare tutta la carta, soprattutto nome e numero in basso, evitando riflessi.');
   }catch(err){
     console.error(err);
     status.textContent='Riconoscimento non riuscito';
