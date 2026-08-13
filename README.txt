@@ -91,3 +91,13 @@ NOVITÀ v1.5.4 – valore stimato collezione
 - I doppioni vengono conteggiati perché sono copie realmente possedute.
 - Se alcune carte non hanno un prezzo in euro, il valore viene indicato come “parziale”.
 - Prezzi in dollari non vengono sommati ai prezzi in euro per evitare totali fuorvianti.
+
+NOVITÀ v1.6 – stabilità PWA
+- Rimossa la routine aggressiva che disregistrava Service Worker e cancellava cache a ogni versione.
+- start_url e manifest id tornano stabili e non cambiano più a ogni release.
+- index.html usa network-first: le nuove versioni vengono rilevate senza perdere i dati.
+- Banner “Nuova versione disponibile” con aggiornamento esplicito.
+- L'aggiornamento sostituisce solo il codice dell'app, non localStorage/IndexedDB.
+- Richiesta navigator.storage.persist() per ridurre il rischio di eliminazione automatica dello storage.
+- Esporta backup / Importa backup della collezione in JSON.
+- Il pulsante “Aggiorna app” non cancella più cache o storage.

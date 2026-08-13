@@ -53,7 +53,11 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
 <body>
 <div id="appBackground"></div><div id="appShade"></div>
 <div class="app">
-<header class="top"><div class="brand"><div class="orb"></div><div><h1 id="appTitle">La mia collezione</h1><div class="sub">La tua collezione, in tasca. <span id="buildVersion" style="opacity:.72">v1.5.4</span></div></div></div><button class="iconbtn" onclick="go('settings')">⚙️</button></header>
+<header class="top"><div class="brand"><div class="orb"></div><div><h1 id="appTitle">La mia collezione</h1><div class="sub">La tua collezione, in tasca. <span id="buildVersion" style="opacity:.72">v1.6</span></div></div></div><button class="iconbtn" onclick="go('settings')">⚙️</button></header>
+<div id="updateBanner" class="panel row" style="display:none;margin-bottom:12px">
+  <div><b>Nuova versione disponibile</b><div class="notice">Aggiorna il codice dell'app senza toccare la tua collezione.</div></div>
+  <button type="button" class="cta" id="applyUpdateBtn" style="padding:10px 12px">Aggiorna</button>
+</div>
 <main>
 <section id="home" class="view active">
   <div class="hero"><div class="eyebrow">Allenatore • Livello 1</div><h2>Costruisci la tua collezione</h2><p>Scansiona le carte e completa le tue serie preferite.</p><button class="cta" onclick="go('scan')">📸 Scansiona carta</button></div>
@@ -204,8 +208,18 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
     <button type="button" class="cta" id="saveCollectorName">Salva nome</button>
   </div>
   <div class="panel stack" style="margin-top:12px">
+    <b>Backup collezione</b>
+    <div class="notice">Esporta periodicamente un backup. Contiene carte, nome del collezionista e impostazioni principali. Le foto personali non vengono incluse.</div>
+    <div class="row" style="gap:8px">
+      <button type="button" class="cta secondary" id="exportBackupBtn" style="flex:1">⬇️ Esporta backup</button>
+      <label class="cta secondary" style="flex:1;text-align:center;cursor:pointer">⬆️ Importa backup
+        <input id="importBackupInput" type="file" accept="application/json,.json" hidden>
+      </label>
+    </div>
+  </div>
+  <div class="panel stack" style="margin-top:12px">
     <b>Aggiornamenti</b>
-    <div class="notice">Versione installata: <strong>v1.5.4</strong>. Se dopo un aggiornamento vedi ancora la versione precedente, premi qui.</div>
+    <div class="notice">Versione installata: <strong>v1.6</strong>. Se dopo un aggiornamento vedi ancora la versione precedente, premi qui.</div>
     <button type="button" class="cta secondary" id="forceUpdateBtn">🔄 Aggiorna app</button>
   </div>
   <div class="panel stack" style="margin-top:12px">
@@ -1128,12 +1142,8 @@ if(forceUpdateBtn){
   forceUpdateBtn.addEventListener('click',async()=>{
     try{
       if('serviceWorker' in navigator){
-        const regs=await navigator.serviceWorker.getRegistrations();
-        for(const r of regs)await r.update();
-      }
-      if('caches' in window){
-        const keys=await caches.keys();
-        await Promise.all(keys.filter(k=>k!=='trainer-vault-v152').map(k=>caches.delete(k)));
+        const reg=await navigator.serviceWorker.getRegistration();
+        if(reg)await reg.update();
       }
     }catch(e){}
     location.reload();
@@ -1141,38 +1151,105 @@ if(forceUpdateBtn){
 }
 
 
-const BUILD_VERSION='1.5.4';
-async function ensureFreshInstalledPWA(){
-  const previous=localStorage.getItem('trainerVault_build_version');
-  if(previous===BUILD_VERSION)return;
 
-  localStorage.setItem('trainerVault_build_version',BUILD_VERSION);
 
+
+async function requestPersistentStorage(){
   try{
-    if('serviceWorker' in navigator){
-      const regs=await navigator.serviceWorker.getRegistrations();
-      for(const reg of regs)await reg.unregister();
+    if(navigator.storage && navigator.storage.persist){
+      await navigator.storage.persist();
     }
   }catch(e){}
-
-  try{
-    if('caches' in window){
-      const keys=await caches.keys();
-      await Promise.all(keys.map(k=>caches.delete(k)));
-    }
-  }catch(e){}
-
-  // Installed iOS PWAs can keep their old navigation entry alive.
-  // Reload once with a build query to force a fresh network navigation.
-  const u=new URL(location.href);
-  if(u.searchParams.get('build')!==BUILD_VERSION){
-    u.searchParams.set('build',BUILD_VERSION);
-    location.replace(u.toString());
-    return new Promise(()=>{});
-  }
 }
 
-(async()=>{await ensureFreshInstalledPWA();try{await openDB()}catch(e){}const bg=localStorage.getItem(BG_KEY);if(bg)setBg(bg);applyCollectorName();updateStats();renderSets();if('serviceWorker' in navigator && location.protocol!=='file:')navigator.serviceWorker.register('./sw.js?v=154')})();
+
+function buildBackupPayload(){
+  return {
+    app:'La collezione Pokémon',
+    version:1,
+    exportedAt:new Date().toISOString(),
+    collectorName:localStorage.getItem(COLLECTOR_NAME_KEY)||'',
+    background:localStorage.getItem(BG_KEY)||'',
+    cards:cards()
+  };
+}
+function downloadJson(filename,data){
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+document.getElementById('exportBackupBtn').addEventListener('click',()=>{
+  const name=(localStorage.getItem(COLLECTOR_NAME_KEY)||'collezione').trim().replace(/[^\w\-]+/g,'-');
+  downloadJson('backup-'+(name||'collezione')+'.json',buildBackupPayload());
+});
+document.getElementById('importBackupInput').addEventListener('change',e=>{
+  const f=e.target.files[0];
+  if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const data=JSON.parse(r.result);
+      if(!data || !Array.isArray(data.cards))throw new Error('Backup non valido');
+      if(!confirm('Importare il backup? Le carte attuali verranno sostituite.'))return;
+      saveCards(data.cards);
+      if(typeof data.collectorName==='string'){
+        if(data.collectorName)localStorage.setItem(COLLECTOR_NAME_KEY,data.collectorName);
+        else localStorage.removeItem(COLLECTOR_NAME_KEY);
+      }
+      if(typeof data.background==='string' && data.background){
+        try{localStorage.setItem(BG_KEY,data.background);setBg(data.background)}catch(e){}
+      }
+      applyCollectorName();
+      updateStats();
+      renderSets();
+      renderCollection();
+      alert('Backup importato correttamente.');
+    }catch(err){
+      alert('Non riesco a importare questo backup.');
+    }finally{
+      e.target.value='';
+    }
+  };
+  r.readAsText(f);
+});
+
+
+let pendingServiceWorker=null;
+function showUpdateBanner(worker){
+  pendingServiceWorker=worker;
+  const b=document.getElementById('updateBanner');
+  if(b)b.style.display='flex';
+}
+const applyUpdateBtn=document.getElementById('applyUpdateBtn');
+if(applyUpdateBtn){
+  applyUpdateBtn.addEventListener('click',()=>{
+    if(pendingServiceWorker)pendingServiceWorker.postMessage({type:'SKIP_WAITING'});
+  });
+}
+if('serviceWorker' in navigator && location.protocol!=='file:'){
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{
+    location.reload();
+  });
+}
+
+(async()=>{try{await openDB()}catch(e){}await requestPersistentStorage();const bg=localStorage.getItem(BG_KEY);if(bg)setBg(bg);applyCollectorName();updateStats();renderSets();if('serviceWorker' in navigator && location.protocol!=='file:')navigator.serviceWorker.register('./sw.js').then(reg=>{
+  if(reg.waiting)showUpdateBanner(reg.waiting);
+  reg.addEventListener('updatefound',()=>{
+    const nw=reg.installing;
+    if(!nw)return;
+    nw.addEventListener('statechange',()=>{
+      if(nw.state==='installed' && navigator.serviceWorker.controller){
+        showUpdateBanner(nw);
+      }
+    });
+  });
+  reg.update().catch(()=>{});
+})})();
 </script>
 </body>
 </html>

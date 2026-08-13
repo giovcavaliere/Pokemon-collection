@@ -1,7 +1,7 @@
 {
   "name": "La collezione Pokémon",
   "short_name": "La collezione",
-  "start_url": "./?build=1.5.4",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#091126",
   "theme_color": "#101a38",
@@ -17,5 +17,5 @@
       "type": "image/png"
     }
   ],
-  "id": "./?app=la-collezione"
+  "id": "./"
 }
