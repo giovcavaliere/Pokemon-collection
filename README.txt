@@ -31,3 +31,12 @@ FIX v1.3.1 – scansione mobile
 - Scala di grigi e contrasto aumentato per foil/riflessi.
 - Messaggio d'errore corretto: un mancato match non significa automaticamente foto sfocata.
 - Cache PWA aggiornata.
+
+NOVITÀ v1.4 – riconoscimento a cascata
+- Prima tenta numero carta + totale set + sigla set.
+- Se non basta usa il nome letto dall'OCR.
+- Se ci sono più risultati mostra candidati selezionabili.
+- Se il riconoscimento non è sufficiente apre “Aiutami a identificarla”.
+- Possibilità di cercare manualmente con nome / set / numero / totale.
+- Possibilità di aggiungere manualmente una carta senza bloccare il flusso.
+- Obiettivo: arrivare alla carta corretta con massimo un tap/correzione, invece di mostrare solo errore.
