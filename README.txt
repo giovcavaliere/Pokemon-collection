@@ -69,3 +69,17 @@ NOVITÀ v1.5.1
 - Inserendo, ad esempio, 74 vengono mostrate solo le carte con numero 74.
 - Pulsante “Tutte” per azzerare rapidamente il filtro e tornare all'intero set.
 - Il filtro numero resta visibile in alto mentre si scorre il catalogo.
+
+FIX v1.5.2 – aggiornamento PWA
+- Versione visibile nell'intestazione: v1.5.2.
+- Service worker riscritto: index.html usa network-first e non resta bloccato nella vecchia cache.
+- skipWaiting + clients.claim per attivare subito la nuova build.
+- Pulsante “Aggiorna app” nelle Impostazioni.
+- Filtro numero carta reso graficamente più evidente.
+
+FIX v1.5.3 – PWA iPhone installata
+- Migrazione una tantum della PWA installata: unregister vecchi service worker e cancellazione cache.
+- Reload forzato con parametro build=1.5.3.
+- manifest start_url versionato.
+- service worker registrato con URL versionato.
+- Navigazione sempre network-first sulla PWA installata.

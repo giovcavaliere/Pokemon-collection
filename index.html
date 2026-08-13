@@ -53,7 +53,7 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
 <body>
 <div id="appBackground"></div><div id="appShade"></div>
 <div class="app">
-<header class="top"><div class="brand"><div class="orb"></div><div><h1 id="appTitle">La mia collezione</h1><div class="sub">La tua collezione, in tasca.</div></div></div><button class="iconbtn" onclick="go('settings')">⚙️</button></header>
+<header class="top"><div class="brand"><div class="orb"></div><div><h1 id="appTitle">La mia collezione</h1><div class="sub">La tua collezione, in tasca. <span id="buildVersion" style="opacity:.72">v1.5.3</span></div></div></div><button class="iconbtn" onclick="go('settings')">⚙️</button></header>
 <main>
 <section id="home" class="view active">
   <div class="hero"><div class="eyebrow">Allenatore • Livello 1</div><h2>Costruisci la tua collezione</h2><p>Scansiona le carte e completa le tue serie preferite.</p><button class="cta" onclick="go('scan')">📸 Scansiona carta</button></div>
@@ -140,8 +140,8 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
         <div class="catalogtools">
           <div class="row">
             <div style="flex:1">
-              <label for="catalogNumberFilter">Numero carta</label>
-              <input id="catalogNumberFilter" type="text" inputmode="numeric" placeholder="Es. 74">
+              <label for="catalogNumberFilter"><b style="color:#fff">Filtra per numero carta</b></label>
+              <input id="catalogNumberFilter" type="text" inputmode="numeric" placeholder="Scrivi il numero, es. 74" style="font-size:16px;border:2px solid rgba(255,216,77,.55)">
             </div>
             <button type="button" class="cta secondary" id="catalogClearFilter" style="padding:10px 12px">Tutte</button>
           </div>
@@ -202,6 +202,11 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
     </div>
     <input id="collectorName" type="text" maxlength="24" placeholder="Es. Luca" autocomplete="name">
     <button type="button" class="cta" id="saveCollectorName">Salva nome</button>
+  </div>
+  <div class="panel stack" style="margin-top:12px">
+    <b>Aggiornamenti</b>
+    <div class="notice">Versione installata: <strong>v1.5.3</strong>. Se dopo un aggiornamento vedi ancora la versione precedente, premi qui.</div>
+    <button type="button" class="cta secondary" id="forceUpdateBtn">🔄 Aggiorna app</button>
   </div>
   <div class="panel stack" style="margin-top:12px">
     <b>Sfondo Pokémon</b>
@@ -1083,7 +1088,57 @@ document.getElementById('setSort').addEventListener('change',()=>{
   if(currentOpenSetName)openSet(currentOpenSetName);
 });
 
-(async()=>{try{await openDB()}catch(e){}const bg=localStorage.getItem(BG_KEY);if(bg)setBg(bg);applyCollectorName();updateStats();renderSets();if('serviceWorker' in navigator && location.protocol!=='file:')navigator.serviceWorker.register('./sw.js')})();
+
+const forceUpdateBtn=document.getElementById('forceUpdateBtn');
+if(forceUpdateBtn){
+  forceUpdateBtn.addEventListener('click',async()=>{
+    try{
+      if('serviceWorker' in navigator){
+        const regs=await navigator.serviceWorker.getRegistrations();
+        for(const r of regs)await r.update();
+      }
+      if('caches' in window){
+        const keys=await caches.keys();
+        await Promise.all(keys.filter(k=>k!=='trainer-vault-v152').map(k=>caches.delete(k)));
+      }
+    }catch(e){}
+    location.reload();
+  });
+}
+
+
+const BUILD_VERSION='1.5.3';
+async function ensureFreshInstalledPWA(){
+  const previous=localStorage.getItem('trainerVault_build_version');
+  if(previous===BUILD_VERSION)return;
+
+  localStorage.setItem('trainerVault_build_version',BUILD_VERSION);
+
+  try{
+    if('serviceWorker' in navigator){
+      const regs=await navigator.serviceWorker.getRegistrations();
+      for(const reg of regs)await reg.unregister();
+    }
+  }catch(e){}
+
+  try{
+    if('caches' in window){
+      const keys=await caches.keys();
+      await Promise.all(keys.map(k=>caches.delete(k)));
+    }
+  }catch(e){}
+
+  // Installed iOS PWAs can keep their old navigation entry alive.
+  // Reload once with a build query to force a fresh network navigation.
+  const u=new URL(location.href);
+  if(u.searchParams.get('build')!==BUILD_VERSION){
+    u.searchParams.set('build',BUILD_VERSION);
+    location.replace(u.toString());
+    return new Promise(()=>{});
+  }
+}
+
+(async()=>{await ensureFreshInstalledPWA();try{await openDB()}catch(e){}const bg=localStorage.getItem(BG_KEY);if(bg)setBg(bg);applyCollectorName();updateStats();renderSets();if('serviceWorker' in navigator && location.protocol!=='file:')navigator.serviceWorker.register('./sw.js?v=153')})();
 </script>
 </body>
 </html>

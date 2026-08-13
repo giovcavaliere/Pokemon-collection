@@ -1,7 +1,7 @@
 {
-  "name": "Trainer Vault – Collezione Carte",
-  "short_name": "Trainer Vault",
-  "start_url": "./",
+  "name": "La collezione Pokémon",
+  "short_name": "La collezione",
+  "start_url": "./?build=1.5.3",
   "display": "standalone",
   "background_color": "#091126",
   "theme_color": "#101a38",
@@ -16,5 +16,6 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "id": "./?app=la-collezione"
 }
