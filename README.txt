@@ -40,3 +40,14 @@ NOVITÀ v1.4 – riconoscimento a cascata
 - Possibilità di cercare manualmente con nome / set / numero / totale.
 - Possibilità di aggiungere manualmente una carta senza bloccare il flusso.
 - Obiettivo: arrivare alla carta corretta con massimo un tap/correzione, invece di mostrare solo errore.
+
+FIX v1.4.1
+- Unificazione collezioni: POR e PRO vengono trattati come lo stesso set.
+- “Equilibrio Perfetto” e “Equilibrio Perfetto (POR)” finiscono nella stessa collezione.
+- Anche le carte già salvate vengono normalizzate in lettura, senza cancellare i dati.
+- Ricerca manuale migliorata:
+  * prova prima endpoint diretto set + numero
+  * poi ricerca exact localId
+  * verifica il totale ufficiale del set
+  * accetta POR/PRO come alias
+- Migliorata la probabilità di trovare carte che prima non venivano riconosciute “in nessun modo”.
