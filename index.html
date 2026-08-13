@@ -25,7 +25,7 @@ h1{font-size:22px;margin:0}.sub,.notice{font-size:12px;color:var(--muted);line-h
 .switch{position:relative;width:48px;height:28px}.switch input{display:none}.slider{position:absolute;inset:0;background:#44506f;border-radius:20px}.slider:after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;left:3px;top:3px;background:white}.switch input:checked + .slider{background:#3ecb91}.switch input:checked + .slider:after{transform:translateX(20px)}
 .collection{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;align-items:start}#collectionGrid,#setGrid,#setCatalogCards,#manualSearchResults{padding-bottom:130px}#setGrid{grid-template-columns:minmax(260px,360px);justify-content:center}#setGrid .carditem{width:100%;height:500px}.carditem{position:relative;perspective:1100px;height:420px;cursor:pointer}.cardinner{position:absolute;inset:0;transition:transform .55s;transform-style:preserve-3d}.carditem.flipped .cardinner{transform:rotateY(180deg)}.cardface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card2);border:1px solid var(--line);border-radius:18px;overflow:hidden}.cardback{transform:rotateY(180deg);padding:16px;display:flex;flex-direction:column;overflow:hidden}.thumb{height:74%;background:linear-gradient(180deg,#0d1732,#101c3c);overflow:hidden;display:flex;align-items:center;justify-content:center;padding:10px}.thumb img{width:100%;height:100%;object-fit:contain;object-position:center;border-radius:14px;box-shadow:0 10px 30px #0007}.meta{height:26%;padding:10px 12px;display:flex;flex-direction:column;justify-content:flex-start;font-size:13px}.meta small{color:var(--muted)}.fliphint{text-align:center;color:var(--muted);font-size:11px;margin-top:auto;padding-top:6px}.details{display:grid;gap:6px}.detailrow{background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:12px;padding:8px 10px}.detailrow b{font-size:12px;line-height:1.16}.detailrow span,.market span{font-size:9px}.detailrow span,.market span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase}.market{margin-top:8px;background:rgba(255,216,77,.12);border:1px solid rgba(255,216,77,.26);border-radius:13px;padding:9px 10px}.market b{font-size:15px}.market .notice{font-size:10px}.cardback h3{font-size:16px;line-height:1.12;margin:4px 0 7px}.cardback .eyebrow{font-size:8px}.cardback .fliphint{margin-top:auto;padding-top:7px;font-size:10px}
 .selectmark{display:none;position:absolute;top:9px;right:9px;width:30px;height:30px;border-radius:50%;background:#091126dd;border:2px solid #fff;z-index:3;place-items:center}.select-mode .selectmark{display:grid}.carditem.selected{outline:3px solid var(--yellow);border-radius:18px}.carditem.selected .selectmark{background:var(--yellow);color:#20243a}
-.setrow{padding:15px;cursor:pointer}.progress{height:10px;border-radius:999px;background:#ffffff18;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#59a9ff,#4fe0a5)}.count{font-weight:900;font-size:18px}.empty{text-align:center;color:var(--muted);padding:30px}
+.setrow{padding:15px;cursor:pointer}.progress{height:10px;border-radius:999px;background:#ffffff18;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#59a9ff,#4fe0a5)}.count{font-weight:900;font-size:18px}.setvalue{font-size:12px;color:#ffe991;margin-top:4px}.setvalue b{font-size:14px;color:#fff}.empty{text-align:center;color:var(--muted);padding:30px}
 .view{display:none}.view.active{display:block}
 nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(calc(100% - 24px),720px);display:grid;grid-template-columns:repeat(4,1fr);background:rgba(9,17,38,.93);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:22px;padding:8px;z-index:20}nav button{border:0;background:transparent;color:#aab7d6;border-radius:15px;padding:8px 4px;font-size:11px}nav button span{display:block;font-size:21px}nav button.active{background:#fff1;color:#fff}
 .modalbackdrop{position:fixed;inset:0;background:rgba(3,8,20,.72);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000}.modalbackdrop.show{display:flex}.modal{width:min(420px,100%);background:linear-gradient(180deg,#17264f,#101a38);border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:22px;box-shadow:0 30px 80px #0009}.modalicon{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:rgba(255,216,77,.14);font-size:24px;margin-bottom:12px}.modal h3{margin:0 0 8px;font-size:22px}.modal p{margin:0;color:#d6dff4;line-height:1.5}.modalactions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}.modalactions button{width:100%}@media(max-width:450px){.collection{grid-template-columns:1fr}.carditem{height:440px}#setGrid{grid-template-columns:1fr}#setGrid .carditem{max-width:360px;margin:auto;height:500px}.hero h2{font-size:25px}.cardback{padding:13px}.detailrow{padding:7px 8px}.market{margin-top:7px}.modalactions{grid-template-columns:1fr}}
@@ -53,7 +53,7 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
 <body>
 <div id="appBackground"></div><div id="appShade"></div>
 <div class="app">
-<header class="top"><div class="brand"><div class="orb"></div><div><h1 id="appTitle">La mia collezione</h1><div class="sub">La tua collezione, in tasca. <span id="buildVersion" style="opacity:.72">v1.5.3</span></div></div></div><button class="iconbtn" onclick="go('settings')">⚙️</button></header>
+<header class="top"><div class="brand"><div class="orb"></div><div><h1 id="appTitle">La mia collezione</h1><div class="sub">La tua collezione, in tasca. <span id="buildVersion" style="opacity:.72">v1.5.4</span></div></div></div><button class="iconbtn" onclick="go('settings')">⚙️</button></header>
 <main>
 <section id="home" class="view active">
   <div class="hero"><div class="eyebrow">Allenatore • Livello 1</div><h2>Costruisci la tua collezione</h2><p>Scansiona le carte e completa le tue serie preferite.</p><button class="cta" onclick="go('scan')">📸 Scansiona carta</button></div>
@@ -61,7 +61,7 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
     <div class="stat"><b id="statCards">0</b><span>Carte totali</span></div>
     <div class="stat"><b id="statSets">0</b><span>Collezioni</span></div>
     <div class="stat"><b id="statCompleteSets">0</b><span>Collezioni complete</span></div>
-    <div class="stat"><b id="statSpecial">0</b><span>Carte speciali</span></div>
+    <div class="stat"><b id="statCollectionValue">0,00 €</b><span>Valore stimato</span></div>
   </div>
   <div class="grid">
     <button class="tile" onclick="go('sets')"><div class="emoji">🗂️</div><b>Collezioni</b><small>Progressi per serie</small></button>
@@ -158,7 +158,7 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
     <button class="iconbtn" onclick="go('sets')">←</button>
     <div style="flex:1;min-width:0">
       <h3 id="setTitle" style="margin:2px 0 4px;line-height:1.2;overflow-wrap:anywhere"></h3>
-      <div id="setProgress" class="notice"></div>
+      <div id="setProgress" class="notice"></div><div id="setEstimatedValue" class="setvalue"></div>
     </div>
   </div>
   <div class="panel" style="margin-bottom:12px">
@@ -205,7 +205,7 @@ nav{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));tran
   </div>
   <div class="panel stack" style="margin-top:12px">
     <b>Aggiornamenti</b>
-    <div class="notice">Versione installata: <strong>v1.5.3</strong>. Se dopo un aggiornamento vedi ancora la versione precedente, premi qui.</div>
+    <div class="notice">Versione installata: <strong>v1.5.4</strong>. Se dopo un aggiornamento vedi ancora la versione precedente, premi qui.</div>
     <button type="button" class="cta secondary" id="forceUpdateBtn">🔄 Aggiorna app</button>
   </div>
   <div class="panel stack" style="margin-top:12px">
@@ -269,6 +269,28 @@ function normalizeCardSet(card){
 }
 function sameCard(a,b){
   return canonicalSetCode(a.set)===canonicalSetCode(b.set) && baseNo(a.number)===baseNo(b.number);
+}
+
+
+function euroMarketValue(v){
+  const raw=String(v||'').trim();
+  if(!raw || /non disponibile|da aggiornare|—/i.test(raw))return null;
+  // Do not mix dollar prices with euro totals.
+  if(raw.includes('$') && !raw.includes('€'))return null;
+  const cleaned=raw.replace(/[^\d,.-]/g,'').replace(',','.');
+  const n=parseFloat(cleaned);
+  return Number.isFinite(n) ? n : null;
+}
+function estimatedValueSummary(arr){
+  let total=0, valued=0;
+  for(const c of arr){
+    const v=euroMarketValue(c.marketValue);
+    if(v!==null){total+=v;valued++;}
+  }
+  return {total,valued,totalCards:arr.length,complete:valued===arr.length && arr.length>0};
+}
+function euro(v){
+  return Number(v||0).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
 }
 
 function parseMarketValue(v){
@@ -537,7 +559,13 @@ function groupedSets(){
   });
   return Object.values(groups);
 }
-function updateStats(){const arr=cards(),groups=groupedSets();document.getElementById('statCards').textContent=arr.length;document.getElementById('statSets').textContent=groups.length;document.getElementById('statCompleteSets').textContent=groups.filter(g=>g.total>0&&g.cards.length>=g.total).length;document.getElementById('statSpecial').textContent=arr.filter(c=>c.special).length}
+function updateStats(){
+  const arr=cards(),groups=groupedSets(),value=estimatedValueSummary(arr);
+  document.getElementById('statCards').textContent=arr.length;
+  document.getElementById('statSets').textContent=groups.length;
+  document.getElementById('statCompleteSets').textContent=groups.filter(g=>g.total>0&&g.cards.length>=g.total).length;
+  document.getElementById('statCollectionValue').textContent=euro(value.total);
+}
 
 
 async function prepareOCRImage(dataUrl){
@@ -929,7 +957,9 @@ async function addDemoCard(){
   }catch(e){console.error(e);alert('Errore durante l’aggiunta della carta.')}
 }
 
-function renderSets(){const box=document.getElementById('setsList'),groups=groupedSets();box.innerHTML='';if(!groups.length){box.innerHTML='<div class="panel empty">Nessuna collezione ancora.</div>';return}groups.forEach(g=>{const total=g.total||g.cards.length,p=Math.round(g.cards.length/total*100);const e=document.createElement('div');e.className='setrow';e.innerHTML='<div class="row"><div><b>'+g.name+'</b><div class="notice">'+p+'% completata</div></div><div class="count">'+g.cards.length+' / '+total+'</div></div><div class="progress" style="margin-top:10px"><i style="width:'+p+'%"></i></div>';e.onclick=()=>openSet(g.key);box.appendChild(e)})}
+function renderSets(){const box=document.getElementById('setsList'),groups=groupedSets();box.innerHTML='';if(!groups.length){box.innerHTML='<div class="panel empty">Nessuna collezione ancora.</div>';return}groups.forEach(g=>{const total=g.total||g.cards.length,p=Math.round(g.cards.length/total*100);const e=document.createElement('div');e.className='setrow';const val=estimatedValueSummary(cards().filter(c=>(canonicalSetCode(c.set)||canonicalSeriesName(c))===g.key));
+    const valNote=val.valued?euro(val.total)+(val.complete?'':' • parziale'):'Valore non disponibile';
+    e.innerHTML='<div class="row"><div><b>'+g.name+'</b><div class="notice">'+p+'% completata</div><div class="setvalue">Valore stimato: <b>'+valNote+'</b></div></div><div class="count">'+g.cards.length+' / '+total+'</div></div><div class="progress" style="margin-top:10px"><i style="width:'+p+'%"></i></div>';e.onclick=()=>openSet(g.key);box.appendChild(e)})}
 async function buildCard(c,arr,selectable){
   const el=document.createElement('div');el.className='carditem'+(selectedIds.has(c.id)?' selected':'');
   let pic='<div class="thumb"><img src="'+(c.catalogImage||'demo-pala-scavabuche.jpg')+'" alt="'+c.name+'"></div>';
@@ -943,7 +973,11 @@ async function buildCard(c,arr,selectable){
 }
 async function renderCollection(){const mode=document.getElementById('cardsSort')?.value||'added_desc';const arr=sortCardsList(cards(),mode),box=document.getElementById('collectionGrid');box.innerHTML='';document.getElementById('collection').classList.toggle('select-mode',selectionMode);if(!arr.length){box.innerHTML='<div class="empty" style="grid-column:1/-1">Nessuna carta ancora.</div>';return}for(const c of arr)box.appendChild(await buildCard(c,arr,true))}
 let currentOpenSetName='';
-async function openSet(key){currentOpenSetName=key;const mode=document.getElementById('setSort')?.value||'number_asc';const arr=sortCardsList(cards().filter(c=>(canonicalSetCode(c.set)||canonicalSeriesName(c))===key),mode),u=uniqueCards(arr),total=Number((arr[0]||{}).setTotal)||u.length;document.getElementById('setTitle').textContent=arr.length?canonicalSeriesName(arr[0]):key;document.getElementById('setProgress').textContent=u.length+' di '+total+' carte';const box=document.getElementById('setGrid');box.innerHTML='';for(const c of arr)box.appendChild(await buildCard(c,arr,false));go('setdetail')}
+async function openSet(key){currentOpenSetName=key;const mode=document.getElementById('setSort')?.value||'number_asc';const arr=sortCardsList(cards().filter(c=>(canonicalSetCode(c.set)||canonicalSeriesName(c))===key),mode),u=uniqueCards(arr),total=Number((arr[0]||{}).setTotal)||u.length;document.getElementById('setTitle').textContent=arr.length?canonicalSeriesName(arr[0]):key;document.getElementById('setProgress').textContent=u.length+' di '+total+' carte';
+  const value=estimatedValueSummary(arr);
+  document.getElementById('setEstimatedValue').innerHTML=value.valued
+    ? 'Valore stimato: <b>'+euro(value.total)+(value.complete?'':' • parziale')+'</b>'
+    : 'Valore stimato: <b>non disponibile</b>';const box=document.getElementById('setGrid');box.innerHTML='';for(const c of arr)box.appendChild(await buildCard(c,arr,false));go('setdetail')}
 
 function toggleSelectMode(){selectionMode=!selectionMode;if(!selectionMode)selectedIds.clear();document.getElementById('selectionBar').style.display=selectionMode?'flex':'none';document.getElementById('selectBtn').textContent=selectionMode?'✖️':'🗑️';updateSelection();renderCollection()}
 function toggleSelected(id){selectedIds.has(id)?selectedIds.delete(id):selectedIds.add(id);updateSelection();renderCollection()}
@@ -1107,7 +1141,7 @@ if(forceUpdateBtn){
 }
 
 
-const BUILD_VERSION='1.5.3';
+const BUILD_VERSION='1.5.4';
 async function ensureFreshInstalledPWA(){
   const previous=localStorage.getItem('trainerVault_build_version');
   if(previous===BUILD_VERSION)return;
@@ -1138,7 +1172,7 @@ async function ensureFreshInstalledPWA(){
   }
 }
 
-(async()=>{await ensureFreshInstalledPWA();try{await openDB()}catch(e){}const bg=localStorage.getItem(BG_KEY);if(bg)setBg(bg);applyCollectorName();updateStats();renderSets();if('serviceWorker' in navigator && location.protocol!=='file:')navigator.serviceWorker.register('./sw.js?v=153')})();
+(async()=>{await ensureFreshInstalledPWA();try{await openDB()}catch(e){}const bg=localStorage.getItem(BG_KEY);if(bg)setBg(bg);applyCollectorName();updateStats();renderSets();if('serviceWorker' in navigator && location.protocol!=='file:')navigator.serviceWorker.register('./sw.js?v=154')})();
 </script>
 </body>
 </html>

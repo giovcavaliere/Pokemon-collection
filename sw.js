@@ -1,4 +1,4 @@
-const CACHE='trainer-vault-v153';
+const CACHE='trainer-vault-v154';
 const ASSETS=['./manifest.webmanifest','./icon-192.png','./icon-512.png','./demo-pala-scavabuche.jpg'];
 
 self.addEventListener('install',event=>{

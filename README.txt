@@ -83,3 +83,11 @@ FIX v1.5.3 – PWA iPhone installata
 - manifest start_url versionato.
 - service worker registrato con URL versionato.
 - Navigazione sempre network-first sulla PWA installata.
+
+NOVITÀ v1.5.4 – valore stimato collezione
+- Home: nuovo campo Valore stimato della collezione complessiva.
+- Tab Collezioni: ogni collezione mostra la somma stimata delle carte possedute.
+- Dentro una collezione: valore stimato totale del set posseduto.
+- I doppioni vengono conteggiati perché sono copie realmente possedute.
+- Se alcune carte non hanno un prezzo in euro, il valore viene indicato come “parziale”.
+- Prezzi in dollari non vengono sommati ai prezzi in euro per evitare totali fuorvianti.
